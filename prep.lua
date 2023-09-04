@@ -1,3 +1,5 @@
+local FinalFile = {}
+local SavePoints = {}
 Workspace = game:GetService("Workspace")
 ReplicatedStorage = game:GetService("ReplicatedStorage")
 LocalPlayer = game:GetService("Players").LocalPlayer
@@ -7,7 +9,7 @@ GameScriptEnv = getsenv(LocalPlayer.PlayerScripts.CL_MAIN_GameScript)
 oldAlert = GameScriptEnv.newAlert
 GameScriptEnv.newAlert = function(...)
 	if checkcaller() then
-		SafeCall(oldAlert, ...)
+		oldAlert(...)
 	end
 end
 Alert = function(...) -- Custom Fe2 Rainbow Alert Function
@@ -38,12 +40,14 @@ for i,v in pairs(Map:GetChildren()) do
 end
 Alert("Spawn Offset calculated. Preparing player and client..")
 local SpawnLocation = SpawnOffset * AnchorPart.CFrame
+FinalFile["SpawnOffset"] = SpawnOffset
 
 UpdateGameState = GameScriptEnv.updGameState
 GameScriptEnv.updGameState = function(...)
 	repeat wait(1) until GameScriptEnv.updGameState == UpdateGameState
-	return SafeCall(UpdateGameState, ...)
+	return UpdateGameState(...)
 end -- Lock GameState
+
 LocalPlayer.Character.Humanoid.Health = 0 -- Kill Player
 LocalPlayer.CharacterAdded:Wait() -- Wait For Respawn
 Alert("Client ready!")
