@@ -7,7 +7,7 @@ GameScriptEnv = getsenv(LocalPlayer.PlayerScripts.CL_MAIN_GameScript)
 oldAlert = GameScriptEnv.newAlert
 GameScriptEnv.newAlert = function(...)
 	if checkcaller() then
-		oldAlert(...)
+		SafeCall(oldAlert, ...)
 	end
 end
 Alert = function(...) -- Custom Fe2 Rainbow Alert Function
@@ -42,7 +42,7 @@ local SpawnLocation = SpawnOffset * AnchorPart.CFrame
 UpdateGameState = GameScriptEnv.updGameState
 GameScriptEnv.updGameState = function(...)
 	repeat wait(1) until GameScriptEnv.updGameState == UpdateGameState
-	return UpdateGameState(...)
+	return SafeCall(UpdateGameState, ...)
 end -- Lock GameState
 LocalPlayer.Character.Humanoid.Health = 0 -- Kill Player
 LocalPlayer.CharacterAdded:Wait() -- Wait For Respawn
