@@ -26,7 +26,7 @@ Map = Workspace.Multiplayer:WaitForChild("Map"):Clone()
 Map.Parent = workspace -- Bypass Map Deletion
 
 local AnchorPart = Map:FindFirstChild("Part", true)
-SpawnOffset
+local SpawnOffset
 for i,v in pairs(Map:GetChildren()) do
 	if v.ClassName == "Part" then
 		local X, Y, Z = v.Size.X, v.Size.Y, v.Size.Z
@@ -48,11 +48,15 @@ LocalPlayer.Character.Humanoid.Health = 0 -- Kill Player
 LocalPlayer.CharacterAdded:Wait() -- Wait For Respawn
 Alert("Client ready!")
 Humanoid, HumanoidRootPart = LocalPlayer.Character:WaitForChild("Humanoid"), LocalPlayer.Character:WaitForChild("HumanoidRootPart")
+local GodMode
 function Reset() -- Return to no tas system
 	GameScriptEnv.updGameState = UpdateGameState
 	Humanoid.Health = 0
 	getgenv().BlockRemotes = false
 end
+GodMode = Humanoid.Changed:Connect(function()
+	Humanoid.Health = 100
+end)
 -- Beginning of Client-Side Anticheat Bypass
 Alert("Attempting to bypass Client-Side Anticheat..")
 local function DisableAntiGrav(Character)
@@ -84,5 +88,7 @@ old = hookmetamethod(game, "__namecall", function(self, ...)
 end)
 Alert("Bypassed Client-Side Anticheat without errors!")
 -- End of Client-side Anticheat Bypass
-task.wait(.1)
+
 HumanoidRootPart.CFrame = SpawnLocation
+
+-- Beginning of Playback Tools Stuff
